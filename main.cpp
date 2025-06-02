@@ -6,10 +6,10 @@
 
 using namespace std;
 
-int max = 20;
+int MAX = 20;
 int INF = numeric_limits<int>::max();
-int adjMatrix[MAX_VERTICES][MAX_VERTICES];
-string vertices[MAX_VERTICES];
+int adjMatrix[20][20];
+string vertices[20];
 int vertexCount = 0;
 
 int getVertexIndex(const string& label);
@@ -21,8 +21,8 @@ void printAdjacencyTable();
 void dijkstra(const string& startLabel, const string& endLabel);
 
 int main() {
-    for (int i = 0; i < MAX_VERTICES; i++)
-        for (int j = 0; j < MAX_VERTICES; j++)
+    for (int i = 0; i < MAX; i++)
+        for (int j = 0; j < MAX; j++)
             adjMatrix[i][j] = INF;
 
     int choice;
@@ -30,14 +30,14 @@ int main() {
     int weight;
 
     while (true) {
-      cout << "0. exit"<<endl;
-      cout << "1. add vertex"<<endl;
-      cout << "2. add edge"<<endl;
-      cout << "3. remove vertex"<<endl;
-      cout << "4. remove edge\n"<<endl;
-      cout << "5. print adjacency table"<<endl;
-      cout << "6. find shortest path"<<endl;
-        
+        cout << "0. exit" << endl;
+        cout << "1. add vertex" << endl;
+        cout << "2. add edge" << endl;
+        cout << "3. remove vertex" << endl;
+        cout << "4. remove edge" << endl;
+        cout << "5. print adjacency table" << endl;
+        cout << "6. find shortest path" << endl;
+
         cin >> choice;
 
         switch (choice) {
@@ -51,7 +51,7 @@ int main() {
                 cin >> label1;
                 cout << "end vert: ";
                 cin >> label2;
-                cout << "wieght: ";
+                cout << "weight: ";
                 cin >> weight;
                 addEdge(label1, label2, weight);
                 break;
@@ -80,12 +80,10 @@ int main() {
             case 0:
                 return 0;
             default:
-	      cout << "invalid"<<endl;
+                cout << "invalid" << endl;
         }
     }
 }
-
-// Function definitions
 
 int getVertexIndex(const string& label) {
     for (int i = 0; i < vertexCount; i++) {
@@ -96,33 +94,33 @@ int getVertexIndex(const string& label) {
 }
 
 void addVertex(const string& label) {
-    if (vertexCount >= max) {
-      cout << "max vertecies reached"<<endl;
+    if (vertexCount >= MAX) {
+        cout << "max vertices reached" << endl;
         return;
     }
     if (getVertexIndex(label) != -1) {
-      cout << "already exists"<<endl;
+        cout << "already exists" << endl;
         return;
     }
     vertices[vertexCount++] = label;
-    cout << "added"<<endl;
+    cout << "added" << endl;
 }
 
 void addEdge(const string& from, const string& to, int weight) {
     int i = getVertexIndex(from);
     int j = getVertexIndex(to);
     if (i == -1 || j == -1) {
-        cout << "not found";
+        cout << "not found" << endl;
         return;
     }
     adjMatrix[i][j] = weight;
-    cout << "added"<<endl;
+    cout << "added" << endl;
 }
 
 void removeVertex(const string& label) {
     int index = getVertexIndex(label);
     if (index == -1) {
-      cout << "not found"<<endl;
+        cout << "not found" << endl;
         return;
     }
 
@@ -134,18 +132,18 @@ void removeVertex(const string& label) {
         }
     }
     vertexCount--;
-    cout << "removed"<<endl;
+    cout << "removed" << endl;
 }
 
 void removeEdge(const string& from, const string& to) {
     int i = getVertexIndex(from);
     int j = getVertexIndex(to);
     if (i == -1 || j == -1) {
-      cout << "not found"<<endl;
+        cout << "not found" << endl;
         return;
     }
     adjMatrix[i][j] = INF;
-    cout << "removed"<<endl;
+    cout << "removed" << endl;
 }
 
 void printAdjacencyTable() {
@@ -170,7 +168,7 @@ void dijkstra(const string& startLabel, const string& endLabel) {
     int start = getVertexIndex(startLabel);
     int end = getVertexIndex(endLabel);
     if (start == -1 || end == -1) {
-      cout << "not found"<<endl;
+        cout << "not found" << endl;
         return;
     }
 
@@ -187,7 +185,7 @@ void dijkstra(const string& startLabel, const string& endLabel) {
                 u = j;
         }
 
-        if (dist[u] == INF) break;
+        if (u == -1 || dist[u] == INF) break;
         visited[u] = true;
 
         for (int v = 0; v < vertexCount; v++) {
@@ -199,7 +197,7 @@ void dijkstra(const string& startLabel, const string& endLabel) {
     }
 
     if (dist[end] == INF) {
-      cout << "no possible path"<<endl;
+        cout << "no possible path" << endl;
         return;
     }
 
@@ -211,7 +209,7 @@ void dijkstra(const string& startLabel, const string& endLabel) {
     for (size_t i = 0; i < path.size(); i++) {
         cout << path[i];
         if (i != path.size() - 1)
-	  cout << " -> ";
+            cout << " -> ";
     }
-    cout << "\nweight: " << dist[end] <<endl;
+    cout << "\nweight: " << dist[end] << endl;
 }
